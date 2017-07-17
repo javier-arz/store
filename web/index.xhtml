@@ -9,7 +9,7 @@
     </h:head>
     <h:body>
     <f:view>
-        <h:form>
+        <h:form enctype="multipart/form-data" >
             <p:outputLabel value="Item name "/>
             <p:inputText value="#{ itemMB.item.name }"/>
             <br/>
@@ -32,19 +32,17 @@
            
             <p:outputLabel value="Inventory "/>
             <p:inputText value="#{ itemMB.item.inventory }"/>
-            <br/>
+            <br/>            
             
-           
-            <p:outputLabel value="Main image "/>
-            <p:inputText value="#{ itemMB.item.mainImageUrl }"/>
+            <p:outputLabel value="Image File "/>            
+            <h:inputFile value="#{ itemMB.imageFile }" />
             <br/>
-            
            
             <p:outputLabel value="Stock "/>
             <p:inputText value="#{ itemMB.item.stock }"/>
             <br/>
             
-            <p:commandButton action="#{ itemMB.saveItem }" value="Save Item"/>
+            <h:commandButton action="#{ itemMB.saveItem }" value="Save Item"/>
         </h:form>
         <br/>
     </f:view>
