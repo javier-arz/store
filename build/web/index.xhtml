@@ -1,0 +1,53 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+    <h:head>
+        <title>Items index</title>
+    </h:head>
+    <h:body>
+    <f:view>
+        <h:form>
+            <p:outputLabel value="Item name "/>
+            <p:inputText value="#{ itemMB.item.name }"/>
+            <br/>
+
+           
+            <p:outputLabel value="Buy price "/>
+            <p:inputText value="#{ itemMB.item.buyPrice }"/>
+            <br/>
+            
+           
+            <p:outputLabel value="Sale Price "/>
+            <p:inputText value="#{ itemMB.item.salePrice }"/>
+            <br/>
+            
+           
+            <p:outputLabel value="External id "/>
+            <p:inputText value="#{ itemMB.item.externalId }"/>
+            <br/>
+            
+           
+            <p:outputLabel value="Inventory "/>
+            <p:inputText value="#{ itemMB.item.inventory }"/>
+            <br/>
+            
+           
+            <p:outputLabel value="Main image "/>
+            <p:inputText value="#{ itemMB.item.mainImageUrl }"/>
+            <br/>
+            
+           
+            <p:outputLabel value="Stock "/>
+            <p:inputText value="#{ itemMB.item.stock }"/>
+            <br/>
+            
+            <p:commandButton action="#{ itemMB.saveItem }" value="Save Item"/>
+        </h:form>
+        <br/>
+    </f:view>
+    </h:body>
+</html>
+
