@@ -119,7 +119,16 @@ public class ItemMB {
             e.printStackTrace();
         }
     }
-
+    
+    public String itemIndex()
+    {
+        return "welcomePrimefaces";
+    }
+    
+    public String itemCreate()
+    {
+        return "index";
+    }
     /*
      Messages
      */
