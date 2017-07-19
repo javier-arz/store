@@ -36,13 +36,13 @@ public class Item implements Serializable {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     
-    @Column(nullable = false)
+    @Column(nullable = false, length = 384)
     private String name;
     
-    @Column(nullable = false, name = "sale_price")
+    @Column(nullable = false, name = "sale_price", precision = 2)
     private Double salePrice ;
     
-    @Column(nullable = false, name = "buy_price")
+    @Column(nullable = false, name = "buy_price", precision = 2)
     private Double buyPrice ;
     
     @Column(nullable = true, name = "image_url" )
