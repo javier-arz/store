@@ -2,54 +2,44 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
-      xmlns:f="http://xmlns.jcp.org/jsf/core"
-      xmlns:p="http://primefaces.org/ui">
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
     <h:head>
-        <title>Items index</title>
-        <h:outputStylesheet library="css" name="items.css" />
+        <title>Store</title>
+        <h:outputStylesheet library="css" name="index.css" />
     </h:head>
     <h:body>
-        <f:view>
-            <p:separator />
-            <h:form enctype="multipart/form-data" >
-                <p:panelGrid id="itemsGrid" columns="3" 
-                             columnClasses="isLeft, isCenter, isRight" >
-                    <p:outputLabel value="#{ bundle.ITEM_NAME } " for="name" />
-                    <p:inputText id="name" value="#{ itemMB.item.name }" required="true" />                    
-                    <p:message  for="name" />
-
-                    <p:outputLabel for="buyPrice" value="#{ bundle.ITEM_BUY_PRICE } "/>
-                    <p:inputText id="buyPrice" value="#{ itemMB.item.buyPrice }" 
-                                 required="true" />
-                    <p:message for="buyPrice" />
-
-                    <p:outputLabel value="#{ bundle.ITEM_SALE_PRICE } " for="salePrice" />
-                    <p:inputText id="salePrice" value="#{ itemMB.item.salePrice }" 
-                                 required="true" />
-                    <p:message  for="salePrice" />
-
-                    <p:outputLabel value="#{ bundle.ITEM_EXTERNAL_ID } " for="externalId" />
-                    <p:inputText id="externalId" value="#{ itemMB.item.externalId }" required="true"/>
-                    <p:message  for="externalId" />
-
-                    <p:outputLabel value="#{ bundle.ITEM_INVENTORY } " for="inventory" />
-                    <p:inputText id="inventory" value="#{ itemMB.item.inventory }"/>
-                    <p:message  for="inventory" />
-
-                    <p:outputLabel value="#{ bundle.ITEM_IMAGE_FILE } " for="imageFile" />            
-                    <h:inputFile id="imageFile" value="#{ itemMB.imageFile }" />
-                    <p:message  for="imageFile" />
-
-                    <p:outputLabel value="#{ bundle.ITEM_STOCK } " for="stock" />
-                    <p:inputText id="stock" value="#{ itemMB.item.stock }"/>
-                    <p:message  for="stock" />
+        <p:growl id="mensajes" showDetail="true" life="2000" />
+        <h:form>
+            <p:panel header="#{ bundle.INDEX_SESSION_INIT }" class="loginView">
+                <h:panelGrid columns="2" cellpadding="5">
+                    <p:outputLabel for="username" value="#{ bundle.INDEX_USERNAME }:" />
+                    <p:inputText value="#{ loginBean.user.username }" id="username"
+                                 required="true" label="username" />
+                    <p:outputLabel for="password" value="#{ bundle.INDEX_PASSWORD }:" />
+                    <p:password value="#{ loginBean.user.password }" id="password" required="true"
+                                label="password" />
 
                     <p:outputLabel value="&nbsp;" />
-                    <h:commandButton id="saveItem" action="#{ itemMB.saveItem }" 
-                                     value="#{ bundle.ITEM_SAVE_ITEM }"/>
-                </p:panelGrid>
-            </h:form>
-            <p:outputLabel value="&nbsp;"/>
-        </f:view>
+                    <p:commandButton id="loginButton" value="#{ bundle.INDEX_LOGIN }" class="logiButton"
+                                     action="#{ loginBean.login }" update=":mensajes" />
+                                 <!--    oncomplete="handleLogin(xhr, status, args)" /> -->
+
+                </h:panelGrid>
+            </p:panel>
+        </h:form>
+
     </h:body>
+    <script type="text/javascript">
+        //<![CDATA[
+    /*    function handleLogin(xhr, status, args) {
+            if (!args.validationFailed && args.isLogged) {
+                setTimeout(function () {
+                    window.location = args.view;
+                }, 500);
+            }
+        }  */
+//]]>
+    </script>
 </html>
+

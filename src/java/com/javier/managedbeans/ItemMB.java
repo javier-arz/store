@@ -90,7 +90,7 @@ public class ItemMB {
 
         itemFacade.create(item);
         itemsList = listItems();
-        return "welcomePrimefaces";
+        return "itemsMain";
 
     }
 
@@ -122,12 +122,12 @@ public class ItemMB {
     
     public String itemIndex()
     {
-        return "welcomePrimefaces";
+        return "itemsMain";
     }
     
     public String itemCreate()
     {
-        return "index";
+        return "itemsCreate";
     }
     /*
      Messages
