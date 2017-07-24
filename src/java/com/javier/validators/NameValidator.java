@@ -6,7 +6,6 @@
 package com.javier.validators;
 
 import com.javier.utils.AppBundle;
-import java.util.ResourceBundle;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.faces.application.FacesMessage;
@@ -23,8 +22,6 @@ import javax.faces.validator.ValidatorException;
  */
 @FacesValidator("nameValidator")
 public class NameValidator implements Validator {
-    
-    //private ResourceBundle bundle = ResourceBundle.getBundle("com.javier.texts.messages");
 
     @Override
     public void validate(FacesContext context, UIComponent component,
@@ -43,9 +40,8 @@ public class NameValidator implements Validator {
         }
 
         if (!matcher.matches()) {
-            FacesMessage facesMessage = new FacesMessage(
-//                    label + ": " + bundle.getString("NO_VALID_CHARACTERS_FOR_NAME")
-                    label + ": " + AppBundle.getTextMessage("NO_VALID_CHARACTERS_FOR_NAME") 
+            FacesMessage facesMessage = new FacesMessage( label + ": " + 
+                    AppBundle.getTextMessage("NO_VALID_CHARACTERS_FOR_NAME") 
             );
 
             throw new ValidatorException(facesMessage);

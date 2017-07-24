@@ -7,17 +7,21 @@ package com.javier.managedbeans;
 
 import com.javier.ejb.ItemFacade;
 import com.javier.entities.Item;
+import com.javier.utils.AppFacesContext;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
-import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.RequestScoped;
+import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.Part;
 
@@ -26,24 +30,22 @@ import javax.servlet.http.Part;
  * @author CAROLINA
  */
 @ManagedBean(name = "itemMB")
-@RequestScoped
+@SessionScoped
 public class ItemMB {
 
     @EJB
     private ItemFacade itemFacade;
 
-    public static final String IMG_UPLOAD_FOLDER = FacesContext.getCurrentInstance()
-            .getExternalContext()
-            .getInitParameter("img-file-upload");
-
-    public static final String ITEM_IMG_UPLOAD_FOLDER = IMG_UPLOAD_FOLDER + "items/";
+    public static final String ITEM_IMG_UPLOAD_FOLDER = AppFacesContext.getUploadImageLocation() + "items/";
+    
+    public static final String DEFAULT_IMAGE = AppFacesContext.getDefaultImageLocation();
 
     // Element to receive the file images
     private Part imageFile;
 
     private Item item;
 
-    private static List<Item> itemsList = new ArrayList();
+    private List<Item> itemsList = new ArrayList();
 
     public List<Item> getItemsList() {
         return itemsList;
@@ -89,10 +91,9 @@ public class ItemMB {
             saveImage();
         }
 
-        itemFacade.create(item);
+        itemFacade.create(item);        
         itemsList = listItems();
-        return "itemsMain";
-
+        return "items";
     }
 
     protected void saveImage() {
@@ -120,32 +121,60 @@ public class ItemMB {
             e.printStackTrace();
         }
     }
-    
-    public String itemIndex()
-    {
-        return "itemsMain";
+
+    public String itemIndex() {
+        if (itemsList == null || itemsList.size() == 0) {
+            itemsList = listItems();
+        }
+        return "items";
     }
-    
-    public String itemCreate()
-    {
+
+    public String itemCreate() {
+        // Clear the item object
+        item = new Item();
         return "itemsCreate";
     }
+    
+    public String getImageFor(String somePath)
+    {
+        if ( somePath == null || somePath.isEmpty() ) {
+            return DEFAULT_IMAGE ;
+        }
+        try {
+            Path path = Paths.get(somePath);
+            File f = path.toFile() ;
+            if ( f.exists() ) {
+                return f.getAbsolutePath() ;
+            }
+            return DEFAULT_IMAGE ;
+        } catch (Exception e) 
+        {
+            e.printStackTrace();
+            return DEFAULT_IMAGE ;
+        }
+    }
+    
     /*
      Messages
      */
+
     public void info() {
-        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Info", "PrimeFaces Rocks."));
+        FacesContext.getCurrentInstance()
+                .addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Info", "PrimeFaces Rocks."));
     }
 
     public void warn() {
-        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Warning!", "Watch out for PrimeFaces."));
+        FacesContext.getCurrentInstance()
+                .addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Warning!", "Watch out for PrimeFaces."));
     }
 
     public void error() {
-        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error!", "Contact admin."));
+        FacesContext.getCurrentInstance()
+                .addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error!", "Contact admin."));
     }
 
     public void fatal() {
-        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_FATAL, "Fatal!", "System Error"));
+        FacesContext.getCurrentInstance()
+                .addMessage(null, new FacesMessage(FacesMessage.SEVERITY_FATAL, "Fatal!", "System Error"));
     }
 }

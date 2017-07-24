@@ -9,6 +9,11 @@
         <param-name>img-file-upload</param-name> 
         <param-value>D:/NetbeansJavaEE/Store_images/images/</param-value> 
     </context-param>
+    <context-param> 
+        <description>Location of the default image file. It's Required</description> 
+        <param-name>default-img-location</param-name> 
+        <param-value>../Store_images/images/default_image.png</param-value> 
+    </context-param>
     <servlet>
         <servlet-name>Faces Servlet</servlet-name>
         <servlet-class>javax.faces.webapp.FacesServlet</servlet-class>

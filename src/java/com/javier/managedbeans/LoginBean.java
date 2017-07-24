@@ -5,9 +5,7 @@
  */
 package com.javier.managedbeans;
 
-import com.javier.ejb.ItemFacade;
 import com.javier.ejb.UserFacade;
-import com.javier.entities.Item;
 import com.javier.entities.User;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
@@ -23,9 +21,20 @@ import javax.servlet.http.HttpSession;
 @ManagedBean(name = "loginBean")
 @SessionScoped
 public class LoginBean {
+
     @EJB
-    private UserFacade userFacade;    
+    private UserFacade userFacade;
     
+    @ManagedProperty(value = "#{ itemMB }")
+    private ItemMB itemMB ;
+
+    public ItemMB getItemMB() {
+        return itemMB;
+    }
+
+    public void setItemMB(ItemMB itemMB) {
+        this.itemMB = itemMB;
+    }
 
     public static final String IMG_UPLOAD_FOLDER = FacesContext.getCurrentInstance()
             .getExternalContext()
@@ -81,18 +90,18 @@ public class LoginBean {
 //            context.addCallbackParam("view", "itemsMain.xhtml");
 //        }
 //    }
-    
-        public String login() {
-           String view ;
+    public String login() {
+        String view;
         if (user.getUsername() != null && user.getUsername().equals("admin") && user.getPassword() != null
                 && user.getPassword().equals("admin")) {
             isLogged = true;
-            view = "itemsMain" ;
+
+            view = itemMB.itemIndex();
         } else {
             isLogged = false;
-            view = "index" ;
+            view = "index";
         }
-        return view ;
+        return view;
     }
 
     public void logout() {
