@@ -15,17 +15,21 @@
                 <p:panelGrid id="itemsGrid" columns="3" 
                              columnClasses="isLeft, isCenter, isRight" >
                     <p:outputLabel value="#{ bundle.ITEM_NAME }" for="name" />
-                    <p:inputText id="name" value="#{ itemMB.item.name }" required="true" />                    
+                    <p:inputText id="name" value="#{ itemMB.item.name }" required="true" >
+                        <f:validator validatorId="nameValidator" />
+                    </p:inputText>
                     <p:message  for="name" />
 
                     <p:outputLabel for="buyPrice" value="#{ bundle.ITEM_BUY_PRICE } "/>
-                    <p:inputText id="buyPrice" value="#{ itemMB.item.buyPrice }" 
-                                 required="true" />
+                    <p:inputText id="buyPrice" value="#{ itemMB.item.buyPrice }" required="true" >
+                        <f:validator validatorId="priceValidator" />
+                    </p:inputText>
                     <p:message for="buyPrice" />
 
                     <p:outputLabel value="#{ bundle.ITEM_SALE_PRICE } " for="salePrice" />
-                    <p:inputText id="salePrice" value="#{ itemMB.item.salePrice }" 
-                                 required="true" />
+                    <p:inputText id="salePrice" value="#{ itemMB.item.salePrice }" required="true" >
+                        <f:validator validatorId="priceValidator" />
+                    </p:inputText>
                     <p:message  for="salePrice" />
 
                     <p:outputLabel value="#{ bundle.ITEM_EXTERNAL_ID } " for="externalId" />
@@ -33,7 +37,9 @@
                     <p:message  for="externalId" />
 
                     <p:outputLabel value="#{ bundle.ITEM_INVENTORY } " for="inventory" />
-                    <p:inputText id="inventory" value="#{ itemMB.item.inventory }"/>
+                    <p:inputText id="inventory" value="#{ itemMB.item.inventory }" >
+                        <f:validator validatorId="quantityValidator" />
+                    </p:inputText>
                     <p:message  for="inventory" />
 
                     <p:outputLabel value="#{ bundle.ITEM_IMAGE_FILE } " for="imageFile" />            
@@ -41,7 +47,9 @@
                     <p:message  for="imageFile" />
 
                     <p:outputLabel value="#{ bundle.ITEM_STOCK } " for="stock" />
-                    <p:inputText id="stock" value="#{ itemMB.item.stock }"/>
+                    <p:inputText id="stock" value="#{ itemMB.item.stock }" >
+                        <f:validator validatorId="quantityValidator" />
+                    </p:inputText>
                     <p:message  for="stock" />
 
                     <p:outputLabel value="&nbsp;" />

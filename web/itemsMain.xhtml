@@ -15,10 +15,11 @@
 
         <h:body>
 
-            <p:layout fullPage="true">
+            <p:layout fullPage="true" rendered="#{ loginBean.isLogged }">
 
-                <p:layoutUnit position="north" size="100" resizable="true" closable="true" collapsible="true">
-                    Header
+                <p:layoutUnit position="north" size="100" resizable="true" closable="true" 
+                              collapsible="true" class="generalHeader" >
+                    <h1>Store</h1>
                 </p:layoutUnit>
 
                 <p:layoutUnit position="south" size="100" closable="true" collapsible="true">

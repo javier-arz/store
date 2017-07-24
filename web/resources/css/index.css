@@ -6,3 +6,14 @@
 .logiButton{
     text-align: right ;
 }
+
+.generalHeader
+{
+    color: #c3c3c3 ;
+    background: #efef00 ;
+}
+
+.generalHeader > h1
+{
+    text-align: center ;
+}

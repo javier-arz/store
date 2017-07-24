@@ -5,16 +5,16 @@
  */
 package com.javier.managedbeans;
 
+import com.javier.ejb.ItemFacade;
 import com.javier.ejb.UserFacade;
+import com.javier.entities.Item;
 import com.javier.entities.User;
 import javax.ejb.EJB;
-import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
-import javax.faces.event.ActionEvent;
 import javax.servlet.http.HttpSession;
-import org.primefaces.context.RequestContext;
 
 /**
  *
@@ -23,9 +23,9 @@ import org.primefaces.context.RequestContext;
 @ManagedBean(name = "loginBean")
 @SessionScoped
 public class LoginBean {
-
     @EJB
-    private UserFacade userFacade;
+    private UserFacade userFacade;    
+    
 
     public static final String IMG_UPLOAD_FOLDER = FacesContext.getCurrentInstance()
             .getExternalContext()
