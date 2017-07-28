@@ -56,8 +56,8 @@
                             <p:message  for="stock" />
 
                             <p:outputLabel value="&nbsp;" />
-                            <h:commandButton id="saveItem" action="#{ itemMB.saveItem }" 
-                                             value="#{ bundle.ITEM_SAVE_ITEM }"/>
+                            <p:commandButton id="saveItem" action="#{ itemMB.saveItem }" 
+                                             value="#{ bundle.ITEM_SAVE_ITEM }" ajax="false" />
                         </p:panelGrid>
                     </h:form>
                     <p:outputLabel value="&nbsp;"/>

@@ -9,10 +9,11 @@ import com.javier.ejb.ItemFacade;
 import com.javier.entities.Item;
 import com.javier.utils.AppFacesContext;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
@@ -20,10 +21,12 @@ import java.util.List;
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
-import javax.faces.bean.RequestScoped;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
+import javax.faces.event.PhaseId;
 import javax.servlet.http.Part;
+import org.primefaces.model.DefaultStreamedContent;
+import org.primefaces.model.StreamedContent;
 
 /**
  *
@@ -37,11 +40,14 @@ public class ItemMB {
     private ItemFacade itemFacade;
 
     public static final String ITEM_IMG_UPLOAD_FOLDER = AppFacesContext.getUploadImageLocation() + "items/";
-    
+
     public static final String DEFAULT_IMAGE = AppFacesContext.getDefaultImageLocation();
 
-    // Element to receive the file images
+    // Element to receive the file images (to upload)
     private Part imageFile;
+
+    // For the image to download ...
+    private StreamedContent imageToDownload;
 
     private Item item;
 
@@ -74,6 +80,31 @@ public class ItemMB {
         this.imageFile = file;
     }
 
+    // Primefaces method for graphic Image
+    public StreamedContent getImageToDownload() throws FileNotFoundException {
+        try
+        {
+                FacesContext context = FacesContext.getCurrentInstance();
+
+        if (context.getCurrentPhaseId() == PhaseId.RENDER_RESPONSE) {
+            // So, we're rendering the view. Return a stub StreamedContent so that it will generate right URL.
+            return new DefaultStreamedContent();
+        } else {
+            // So, browser is requesting the image. Return a real StreamedContent with the image bytes.
+        String filename = context.getExternalContext()
+                                .getRequestParameterMap()
+                                .get("filename");      
+                
+        return new DefaultStreamedContent(new FileInputStream(new File(filename)));
+        }
+        }
+        catch(FileNotFoundException e)
+        {
+            e.printStackTrace();
+            return new DefaultStreamedContent(new FileInputStream(new File(DEFAULT_IMAGE))) ;
+        }
+    }
+
     public List<Item> listItems() {
         return itemFacade.findAll();
     }
@@ -91,7 +122,7 @@ public class ItemMB {
             saveImage();
         }
 
-        itemFacade.create(item);        
+        itemFacade.create(item);
         itemsList = listItems();
         return "items";
     }
@@ -134,30 +165,10 @@ public class ItemMB {
         item = new Item();
         return "itemsCreate";
     }
-    
-    public String getImageFor(String somePath)
-    {
-        if ( somePath == null || somePath.isEmpty() ) {
-            return DEFAULT_IMAGE ;
-        }
-        try {
-            Path path = Paths.get(somePath);
-            File f = path.toFile() ;
-            if ( f.exists() ) {
-                return f.getAbsolutePath() ;
-            }
-            return DEFAULT_IMAGE ;
-        } catch (Exception e) 
-        {
-            e.printStackTrace();
-            return DEFAULT_IMAGE ;
-        }
-    }
-    
+
     /*
      Messages
      */
-
     public void info() {
         FacesContext.getCurrentInstance()
                 .addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Info", "PrimeFaces Rocks."));
