@@ -1,0 +1,23 @@
+.isLeft
+{
+    text-align: left ;
+    font-family: cursive;
+    color: #c2c2c2;
+}
+
+.isRight{
+    text-align: right ;
+    font-style: italic ;
+    color: #f1f1f1 ;
+}
+
+.isCenter{
+    text-align: center ;
+    font-family: sans-serif ;
+    font-style: oblique ;
+    color: #a0a0a0 ;
+}
+
+.mainContent{
+    background: #cfcfcf ;
+}

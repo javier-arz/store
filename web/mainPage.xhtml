@@ -1,0 +1,63 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+
+    <f:view contentType="text/html">
+        <h:head>
+            <f:facet name="first">
+                <meta content='text/html; charset=UTF-8' http-equiv="Content-Type"/>
+                <title>Store</title>
+                <h:outputStylesheet library="css" name="index.css" />
+                <h:outputStylesheet library="css" name="items.css" />
+            </f:facet>
+        </h:head>
+
+        <h:body>
+
+            <p:layout fullPage="true" rendered="#{ loginBean.isLogged }">
+
+                <p:layoutUnit position="north" size="125" resizable="false" closable="true" 
+                              collapsible="true" class="generalHeader" >
+                    <h1>#{ bundle.MSG_TITLE }</h1>
+                </p:layoutUnit>
+
+                <p:layoutUnit position="west" size="200" header="Left" collapsible="true">
+                    <h:form>
+                        <p:menu>
+                            <p:submenu label="Resources">
+                                <p:menuitem value="#{ bundle.ITEM_LABEL_ITEMS }" action="#{ itemMB.itemIndex }" />
+                                <p:menuitem value="#{ bundle.SALES_LABEL_SALES }" action="#{ saleMB.saleIndex }"  />
+                                <p:menuitem value="#{ bundle.PURCHASES_LABEL_PURCHASES }" action="#{ purchaseMB.purchaseIndex }"  />
+                                <p:menuitem value="#{ bundle.USERS_LABEL_USERS }" action="#{ userMB.userIndex }"  />
+                                <p:menuitem value="Themes" url="http://www.primefaces.org/themes.html" />
+
+                            </p:submenu>
+
+                        </p:menu>
+                    </h:form>
+                </p:layoutUnit>
+
+                <p:layoutUnit position="center" size="200">
+                    #{ bundle.MSG_WELCOME }
+                    <h:outputLabel value="#{ bundle.MSG_THERE_ARE } "/>
+                    <h:outputText value="#{ itemMB.countItems() }"/>
+                    <h:outputLabel value=" #{ bundle.ITEM_LABEL_ITEMS }!"/>
+                    
+                    <p:separator />
+                    
+                    <ui:insert name="mainContent" class="mainContent" >***</ui:insert>
+
+                </p:layoutUnit>
+
+                <p:layoutUnit position="south" size="50" closable="true" collapsible="true">
+                    Footer
+                </p:layoutUnit>
+
+            </p:layout>
+        </h:body>
+
+    </f:view>
+</html>
