@@ -14,8 +14,12 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
@@ -60,6 +64,15 @@ public class ItemMB {
      */
     public ItemMB() {
         this.item = new Item();
+        // initialize image folders
+            // Check if folder exists
+            if ( Files.exists( Paths.get(ITEM_IMG_UPLOAD_FOLDER) ) ) {
+            try {
+                Files.createDirectories( Paths.get(ITEM_IMG_UPLOAD_FOLDER) ) ;
+            } catch (IOException ex) {
+                Logger.getLogger(UserMB.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            }  
     }
 
     public Item getItem() {
@@ -80,26 +93,23 @@ public class ItemMB {
 
     // Primefaces method for graphic Image
     public StreamedContent getImageToDownload() throws FileNotFoundException {
-        try
-        {
-                FacesContext context = FacesContext.getCurrentInstance();
+        try {
+            FacesContext context = FacesContext.getCurrentInstance();
 
-        if (context.getCurrentPhaseId() == PhaseId.RENDER_RESPONSE) {
-            // So, we're rendering the view. Return a stub StreamedContent so that it will generate right URL.
-            return new DefaultStreamedContent();
-        } else {
-            // So, browser is requesting the image. Return a real StreamedContent with the image bytes.
-        String filename = context.getExternalContext()
-                                .getRequestParameterMap()
-                                .get("filename");      
-                
-        return new DefaultStreamedContent(new FileInputStream(new File(filename)));
-        }
-        }
-        catch(FileNotFoundException e)
-        {
+            if (context.getCurrentPhaseId() == PhaseId.RENDER_RESPONSE) {
+                // So, we're rendering the view. Return a stub StreamedContent so that it will generate right URL.
+                return new DefaultStreamedContent();
+            } else {
+                // So, browser is requesting the image. Return a real StreamedContent with the image bytes.
+                String filename = context.getExternalContext()
+                        .getRequestParameterMap()
+                        .get("filename");
+
+                return new DefaultStreamedContent(new FileInputStream(new File(filename)));
+            }
+        } catch (FileNotFoundException e) {
             e.printStackTrace();
-            return new DefaultStreamedContent(new FileInputStream(new File(DEFAULT_IMAGE))) ;
+            return new DefaultStreamedContent(new FileInputStream(new File(DEFAULT_IMAGE)));
         }
     }
 

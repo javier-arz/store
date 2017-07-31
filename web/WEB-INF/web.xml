@@ -14,6 +14,11 @@
         <param-name>default-img-location</param-name> 
         <param-value>D:/NetbeansJavaEE/Store_images/images/default_image.png</param-value> 
     </context-param>
+    <context-param> 
+        <description>Min allowed length for passwords</description> 
+        <param-name>min-password-length</param-name> 
+        <param-value>6</param-value> 
+    </context-param>
     <servlet>
         <servlet-name>Faces Servlet</servlet-name>
         <servlet-class>javax.faces.webapp.FacesServlet</servlet-class>

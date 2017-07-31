@@ -1,14 +1,57 @@
 <?xml version='1.0' encoding='UTF-8' ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
 
     <body>
 
         <ui:composition template="./mainPage.xhtml">
 
             <ui:define name="mainContent">
-                <h1>Users here !!! </h1>
+                <h:form>
+                    <p:dataTable  id="usersTable" value="#{ userMB.usersList }" 
+                                  var="user"  rows="8"
+                                  paginator="true"
+                                  paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                  rowsPerPageTemplate="1,2,3,5,8,13,21,34,55">
+                        
+                        <p:column headerText="#{ bundle.USER_LABEL_USER_ID }">
+                            <p:outputLabel value="#{ user.id }" />
+                        </p:column>   
+                        
+                        <!-- p:graphicImage value es el método del managedbean -->
+                        <p:column headerText="#{ bundle.USER_LABEL_IMAGE }" >
+                            <p:graphicImage height="75" width="75" value="#{ userMB.imageToDownload }" >
+                                <f:param name="filename" value="#{ user.userImageUrl }" />
+                            </p:graphicImage>
+                        </p:column>
+                        <p:column headerText="#{ bundle.USER_LABEL_USERNAME }" 
+                                  filterBy="#{ user.username }" filterMatchMode="contains" >
+                            <p:outputLabel value="#{ user.username }" />
+                        </p:column>                        
+                        <p:column headerText="#{ bundle.USER_LABEL_FIRST_NAME }" 
+                                  filterBy="#{ user.firstName }" filterMatchMode="contains">
+                            <p:outputLabel value="#{ user.firstName }" />
+                        </p:column>
+                        <p:column headerText="#{ bundle.USER_LABEL_LAST_NAME }" 
+                                  filterBy="#{ user.lastName }" filterMatchMode="exact" >
+                            <p:outputLabel value=" #{ user.lastName }" />
+                        </p:column>
+                        <p:column headerText="#{ bundle.USER_LABEL_EMAIL }" 
+                                  filterBy="#{ user.email }" filterMatchMode="contains" >
+                            <p:outputLabel value="#{ user.email }" />
+                        </p:column>
+
+                        <p:commandButton actionListener="#{ userMB.listUsers() }" update="usersTable" />
+
+                    </p:dataTable>
+
+                    <h:commandButton id="userCreate" action="#{ userMB.userCreate }" 
+                                     value="#{ bundle.USER_LABEL_ADD_USER }"/>
+                </h:form>
             </ui:define>
 
         </ui:composition>

@@ -25,4 +25,9 @@ public class AppFacesContext {
     {
         return facesContext.getInitParameter("default-img-location") ;
     }
+    
+    public static int getMinPasswordSize()
+    {
+        return Integer.parseInt(facesContext.getInitParameter("min-password-length")) ;
+    }
 }

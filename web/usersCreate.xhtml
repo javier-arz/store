@@ -1,0 +1,70 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:h="http://xmlns.jcp.org/jsf/html">
+
+    <body>
+
+        <ui:composition template="./mainPage.xhtml">
+
+            <ui:define name="mainContent">
+                <f:view>
+                    <h3>#{ bundle.ITEM_LABEL_ADD }</h3>
+                    <p:separator />
+                    <h:form enctype="multipart/form-data" >
+                        <p:panelGrid id="usersGrid" columns="3" 
+                                     columnClasses="isLeft, isCenter, isRight" >
+                            <p:outputLabel value="#{ bundle.USER_LABEL_USERNAME }" for="username" />
+                            <p:inputText id="username" value="#{ userMB.user.username }" required="true" >
+                                <f:validator validatorId="nameValidator" />
+                            </p:inputText>
+                            <p:message  for="username" />
+
+                            <p:outputLabel for="firstName" value="#{ bundle.USER_LABEL_FIRST_NAME } "/>
+                            <p:inputText id="firstName" value="#{ userMB.user.firstName }" required="true" >
+                                <f:validator validatorId="nameValidator" />
+                            </p:inputText>
+                            <p:message for="firstName" />
+
+                            <p:outputLabel value="#{ bundle.USER_LABEL_LAST_NAME } " for="lastName" />
+                            <p:inputText id="lastName" value="#{ userMB.user.lastName }" required="true" >
+                                <f:validator validatorId="nameValidator" />
+                            </p:inputText>
+                            <p:message  for="lastName" />
+
+                            <p:outputLabel value="#{ bundle.USER_LABEL_EMAIL }" for="email" />
+                            <p:inputText id="email" value="#{ userMB.user.email }" required="true"/>
+                            <p:message  for="email" />
+
+                            <p:outputLabel value="#{ bundle.USER_LABEL_ENTER_PASSWORD }" for="password" />
+                            <p:password id="password" value="#{ userMB.user.password }" required="true">
+                                <f:validator validatorId="passwordValidator" />
+                            </p:password>
+                            <p:message  for="password" />
+
+                            <p:outputLabel value="#{ bundle.USER_LABEL_ENTER_PASSWORD_AGAIN }" for="passwordConfirmation" />            
+                            <p:password id="passwordConfirmation" value="#{ userMB.passwordConfirmation }" required="true">
+                                <f:validator validatorId="passwordValidator" />
+                            </p:password>
+                            <p:message  for="passwordConfirmation" />
+
+                            <p:outputLabel value="#{ bundle.USER_LABEL_IMAGE } " for="imageFile" />
+                            <h:inputFile id="imageFile" value="#{ userMB.imageFile }" />
+                            <p:message  for="imageFile" />
+
+                            <p:outputLabel value="&nbsp;" />
+                            <p:commandButton id="saveItem" action="#{ userMB.saveUser() }" 
+                                             value="#{ bundle.USER_LABEL_SAVE_USER }" ajax="false" />
+                        </p:panelGrid>
+                    </h:form>
+                    <p:outputLabel value="&nbsp;"/>
+                </f:view>
+            </ui:define>
+
+        </ui:composition>
+
+    </body>
+</html>
