@@ -36,11 +36,13 @@
                             <p:message  for="lastName" />
 
                             <p:outputLabel value="#{ bundle.USER_LABEL_EMAIL }" for="email" />
-                            <p:inputText id="email" value="#{ userMB.user.email }" required="true"/>
+                            <p:inputText id="email" value="#{ userMB.user.email }" required="true" >
+                                <f:validator validatorId="emailValidator" />
+                            </p:inputText>
                             <p:message  for="email" />
 
                             <p:outputLabel value="#{ bundle.USER_LABEL_ENTER_PASSWORD }" for="password" />
-                            <p:password id="password" value="#{ userMB.user.password }" required="true">
+                            <p:password id="password" value="#{ userMB.user.password }" required="true" match="passwordConfirmation" >
                                 <f:validator validatorId="passwordValidator" />
                             </p:password>
                             <p:message  for="password" />

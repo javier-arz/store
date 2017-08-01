@@ -5,7 +5,7 @@
       xmlns:ui="http://java.sun.com/jsf/facelets"
       xmlns:p="http://primefaces.org/ui">
 
-    <f:view contentType="text/html">
+    <f:view contentType="text/html" rendered="#{ loginBean.isLogged }" >
         <h:head>
             <f:facet name="first">
                 <meta content='text/html; charset=UTF-8' http-equiv="Content-Type"/>
@@ -33,6 +33,8 @@
                                 <p:menuitem value="#{ bundle.PURCHASES_LABEL_PURCHASES }" action="#{ purchaseMB.purchaseIndex }"  />
                                 <p:menuitem value="#{ bundle.USERS_LABEL_USERS }" action="#{ userMB.userIndex }"  />
                                 <p:menuitem value="Themes" url="http://www.primefaces.org/themes.html" />
+                                <p:separator />
+                                <p:menuitem value="#{ bundle.INDEX_LOGOUT }" action="#{ loginBean.logout() }"  />
 
                             </p:submenu>
 

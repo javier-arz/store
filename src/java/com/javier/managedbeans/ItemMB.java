@@ -66,7 +66,7 @@ public class ItemMB {
         this.item = new Item();
         // initialize image folders
             // Check if folder exists
-            if ( Files.exists( Paths.get(ITEM_IMG_UPLOAD_FOLDER) ) ) {
+            if ( !Files.exists( Paths.get(ITEM_IMG_UPLOAD_FOLDER) ) ) {
             try {
                 Files.createDirectories( Paths.get(ITEM_IMG_UPLOAD_FOLDER) ) ;
             } catch (IOException ex) {

@@ -5,9 +5,7 @@
  */
 package com.javier.managedbeans;
 
-import com.javier.ejb.UserFacade;
 import com.javier.entities.User;
-import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
@@ -22,25 +20,11 @@ import javax.servlet.http.HttpSession;
 @SessionScoped
 public class LoginBean {
 
-    @EJB
-    private UserFacade userFacade;
-    
     @ManagedProperty(value = "#{ itemMB }")
-    private ItemMB itemMB ;
+    private ItemMB itemMB;
 
-    public ItemMB getItemMB() {
-        return itemMB;
-    }
-
-    public void setItemMB(ItemMB itemMB) {
-        this.itemMB = itemMB;
-    }
-
-    public static final String IMG_UPLOAD_FOLDER = FacesContext.getCurrentInstance()
-            .getExternalContext()
-            .getInitParameter("img-file-upload");
-
-    public static final String USER_IMG_UPLOAD_FOLDER = IMG_UPLOAD_FOLDER + "users/";
+    @ManagedProperty(value = "#{ userMB }")
+    private UserMB userMB;
 
     // User of the current session
     private User user;
@@ -63,6 +47,22 @@ public class LoginBean {
         this.user = user;
     }
 
+    public ItemMB getItemMB() {
+        return itemMB;
+    }
+
+    public void setItemMB(ItemMB itemMB) {
+        this.itemMB = itemMB;
+    }
+
+    public UserMB getUserMB() {
+        return userMB;
+    }
+
+    public void setUserMB(UserMB userMB) {
+        this.userMB = userMB;
+    }
+
     public boolean isIsLogged() {
         return isLogged;
     }
@@ -71,44 +71,35 @@ public class LoginBean {
         this.isLogged = isLogged;
     }
 
-//    public void login(ActionEvent actionEvent) {
-//        RequestContext context = RequestContext.getCurrentInstance();
-//        FacesMessage msg ;
-//        if (user.getUsername() != null && user.getUsername().equals("admin") && user.getPassword() != null
-//                && user.getPassword().equals("admin")) {
-//            isLogged = true;
-//            msg = new FacesMessage(FacesMessage.SEVERITY_INFO, "Bienvenid@", user.getUsername());
-//        } else {
-//            isLogged = false;
-//            msg = new FacesMessage(FacesMessage.SEVERITY_WARN, "Login Error",
-//                    "Credenciales no válidas");
-//        }
-//
-//        FacesContext.getCurrentInstance().addMessage(null, msg);
-//        context.addCallbackParam("isLogged", isLogged);
-//        if (isLogged) {
-//            context.addCallbackParam("view", "itemsMain.xhtml");
-//        }
-//    }
     public String login() {
         String view;
+        // Hardcoded for fast first login
         if (user.getUsername() != null && user.getUsername().equals("admin") && user.getPassword() != null
                 && user.getPassword().equals("admin")) {
             isLogged = true;
-
+            user = new User() ;
             view = itemMB.itemIndex();
         } else {
-            isLogged = false;
-            view = "index";
+            boolean isValid = userMB.checkUserLogin(user.getUsername(), user.getPassword());
+            if (isValid) {
+                isLogged = true;
+                view = itemMB.itemIndex();
+            } else {
+                user = new User();
+                isLogged = false;
+                view = "index";
+            }
+
         }
         return view;
     }
 
-    public void logout() {
+    public String logout() {
         HttpSession session = (HttpSession) FacesContext.getCurrentInstance()
                 .getExternalContext().getSession(false);
         session.invalidate();
         isLogged = false;
+        return "index" ;
     }
 
 }

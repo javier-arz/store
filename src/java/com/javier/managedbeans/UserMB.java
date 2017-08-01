@@ -8,6 +8,7 @@ package com.javier.managedbeans;
 import com.javier.ejb.UserFacade;
 import com.javier.entities.User;
 import com.javier.utils.AppFacesContext;
+import com.javier.utils.Crypter;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -16,10 +17,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.security.MessageDigest;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
@@ -64,13 +64,11 @@ public class UserMB {
         this.user = new User();
         // initialize image folders
         // Check if folder exists
-        if (Files.exists(Paths.get(USER_IMG_UPLOAD_FOLDER))) {
-            try {
-                Files.createDirectories(Paths.get(USER_IMG_UPLOAD_FOLDER));
-            } catch (IOException ex) {
-                Logger.getLogger(UserMB.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        }
+        if (!Files.exists(Paths.get(USER_IMG_UPLOAD_FOLDER))) {
+            File dir =  new File(USER_IMG_UPLOAD_FOLDER)  ;
+            dir.mkdirs() ;
+        }       
+        
     }
 
     public User getUser() {
@@ -130,6 +128,9 @@ public class UserMB {
         if (imageFile != null) {
             saveImage();
         }
+        
+        // crypt password
+        user.setPassword(Crypter.cryptMD5(user.getPassword()) );
 
         userFacade.create(user);
         usersList = listUsers();
@@ -141,6 +142,7 @@ public class UserMB {
             InputStream in = imageFile.getInputStream();
             String fileName = USER_IMG_UPLOAD_FOLDER + user.getUsername() + "_img_"
                     + imageFile.getSubmittedFileName();
+            System.out.println(fileName);
             File f = new File(fileName);
             f.createNewFile();
             FileOutputStream out = new FileOutputStream(f);
@@ -171,6 +173,9 @@ public class UserMB {
     }
 
     public String userIndex() {
+        if ( usersList == null || usersList.size() == 0 ) {
+            usersList = listUsers() ;
+        }
         return "users";
     }
 
@@ -178,6 +183,11 @@ public class UserMB {
         // Clear the item object
         user = new User();
         return "usersCreate";
+    }
+    
+    public boolean checkUserLogin(String username, String password)
+    {
+        return userFacade.checkUserLogin(username, password) ;
     }
     
         /*
