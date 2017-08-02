@@ -7,10 +7,12 @@ package com.javier.managedbeans;
 
 import com.javier.ejb.PurchaseFacade;
 import com.javier.entities.Purchase;
+import com.javier.utils.AppBundle;
 import java.util.ArrayList;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.RequestScoped;
 
 /**
@@ -26,6 +28,7 @@ public class PurchaseMB {
     private Purchase purchase ;
     
     private static List<Purchase> purchasesList = new ArrayList() ;
+
 
     /**
      * Creates a new instance of PurchaseMB
@@ -49,7 +52,7 @@ public class PurchaseMB {
     public static void setPurchasesList(List<Purchase> aPurchasesList) {
         purchasesList = aPurchasesList;
     }
-    
+
     public String purchaseIndex()
     {
         return "purchases" ;

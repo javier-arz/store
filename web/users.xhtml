@@ -17,11 +17,11 @@
                                   paginator="true"
                                   paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
                                   rowsPerPageTemplate="1,2,3,5,8,13,21,34,55">
-                        
+
                         <p:column headerText="#{ bundle.USER_LABEL_USER_ID }">
                             <p:outputLabel value="#{ user.id }" />
                         </p:column>   
-                        
+
                         <!-- p:graphicImage value es el método del managedbean -->
                         <p:column headerText="#{ bundle.USER_LABEL_IMAGE }" >
                             <p:graphicImage height="75" width="75" value="#{ userMB.imageToDownload }" >
@@ -44,13 +44,29 @@
                                   filterBy="#{ user.email }" filterMatchMode="contains" >
                             <p:outputLabel value="#{ user.email }" />
                         </p:column>
-
-                        <p:commandButton actionListener="#{ userMB.listUsers() }" update="usersTable" />
+                        <p:column headerText="#{ bundle.INDEX_LABEL_ACTIONS }" >
+                            <p:commandButton actionListener="#{ userMB.userDelete(user) }" 
+                                             value="#{ bundle.INDEX_LABEL_DELETE }" 
+                                             update="@form" ajax="true" >
+                                <p:confirm header="#{ bundle.INDEX_LABEL_CONFIRMATION }" 
+                                           message="#{ bundle.INDEX_DELETE_CONFIRMATION }" icon="ui-icon-alert" /> 
+                            </p:commandButton>
+                            <p:commandButton action="#{ userMB.userUpdate(user) }"
+                                             value="#{ bundle.INDEX_LABEL_UPDATE }" />
+                        </p:column>
 
                     </p:dataTable>
 
                     <h:commandButton id="userCreate" action="#{ userMB.userCreate }" 
                                      value="#{ bundle.USER_LABEL_ADD_USER }"/>
+
+                    <p:growl id="message" showDetail="true" />
+
+                    <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+                        <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+                        <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+                    </p:confirmDialog>
+
                 </h:form>
             </ui:define>
 

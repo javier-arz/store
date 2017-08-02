@@ -7,7 +7,9 @@ package com.javier.managedbeans;
 
 import com.javier.ejb.UserFacade;
 import com.javier.entities.User;
+import com.javier.utils.AppBundle;
 import com.javier.utils.AppFacesContext;
+import com.javier.utils.AppMessages;
 import com.javier.utils.Crypter;
 import java.io.File;
 import java.io.FileInputStream;
@@ -17,7 +19,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.security.MessageDigest;
 import java.util.ArrayList;
 import java.util.List;
 import javax.ejb.EJB;
@@ -45,6 +46,14 @@ public class UserMB {
 
     public static final String DEFAULT_IMAGE = AppFacesContext.getDefaultImageLocation();
 
+    public static final String OPERATION_UPDATE = "Update";
+
+    public static final String OPERATION_CREATE = "Create";
+
+    public static final String USERS_VIEW_CREATE = "usersCreate";
+
+    public static final String USERS_VIEW_INDEX = "users";
+
     // Element to receive the file images (to upload)
     private Part imageFile;
 
@@ -54,21 +63,24 @@ public class UserMB {
     private User user;
 
     private List<User> usersList = new ArrayList();
-    
-    private String passwordConfirmation ;
+
+    private String passwordConfirmation;
+
+    private String currentOperation;
 
     /**
      * Creates a new instance of UserMB
      */
     public UserMB() {
         this.user = new User();
+        this.currentOperation = OPERATION_CREATE;
         // initialize image folders
         // Check if folder exists
         if (!Files.exists(Paths.get(USER_IMG_UPLOAD_FOLDER))) {
-            File dir =  new File(USER_IMG_UPLOAD_FOLDER)  ;
-            dir.mkdirs() ;
-        }       
-        
+            File dir = new File(USER_IMG_UPLOAD_FOLDER);
+            dir.mkdirs();
+        }
+
     }
 
     public User getUser() {
@@ -124,17 +136,51 @@ public class UserMB {
         this.passwordConfirmation = passwordConfirmation;
     }
 
+    public String getCurrentOperation() {
+        return currentOperation;
+    }
+
+    public void setCurrentOperation(String currentOperation) {
+        this.currentOperation = currentOperation;
+    }
+
     public String saveUser() {
+
+        if (currentOperation == OPERATION_UPDATE) {
+            return updateUser();
+        }
+
         if (imageFile != null) {
             saveImage();
         }
-        
+
         // crypt password
-        user.setPassword(Crypter.cryptMD5(user.getPassword()) );
+        user.setPassword(Crypter.cryptMD5(user.getPassword()));
 
         userFacade.create(user);
         usersList = listUsers();
-        return "users";
+        return USERS_VIEW_INDEX;
+    }
+
+    public String updateUser() {
+        if (imageFile != null) {
+            updateImage();
+        }
+
+        if (user.getPassword() == null || user.getPassword().isEmpty()) {
+            // Find the current password and leave it the same
+            User currentUser = userFacade.find(user.getId());
+            if (currentUser != null) {
+                user.setPassword(currentUser.getPassword());
+            }
+        } else {
+            // crypt password
+            user.setPassword(Crypter.cryptMD5(user.getPassword()));
+        }
+
+        userFacade.edit(user);
+        usersList = listUsers();
+        return USERS_VIEW_INDEX;
     }
 
     protected void saveImage() {
@@ -164,6 +210,16 @@ public class UserMB {
         }
     }
 
+    protected void updateImage() {
+        //check if imageFile exists
+        if (user.getUserImageUrl() != null && !user.getUserImageUrl().isEmpty()
+                && Files.exists(Paths.get(user.getUserImageUrl()))) {
+            File file = new File(user.getUserImageUrl());
+            file.delete();
+        }
+        saveImage();
+    }
+
     public List<User> listUsers() {
         return userFacade.findAll();
     }
@@ -173,24 +229,46 @@ public class UserMB {
     }
 
     public String userIndex() {
-        if ( usersList == null || usersList.size() == 0 ) {
-            usersList = listUsers() ;
+        if (usersList == null || usersList.size() == 0) {
+            usersList = listUsers();
         }
-        return "users";
+        return USERS_VIEW_INDEX;
     }
 
     public String userCreate() {
         // Clear the item object
         user = new User();
-        return "usersCreate";
+        currentOperation = OPERATION_CREATE;
+        return USERS_VIEW_CREATE;
     }
-    
-    public boolean checkUserLogin(String username, String password)
-    {
-        return userFacade.checkUserLogin(username, password) ;
+
+    public boolean checkUserLogin(String username, String password) {
+        return userFacade.checkUserLogin(username, password);
     }
+
+    public String userUpdate(User user_) {
+        currentOperation = OPERATION_UPDATE;
+        user = user_;
+       
+        AppMessages.addMesage(AppBundle.getTextMessage("MSG_TITLE_DELETION"), 
+                AppBundle.getTextMessage("MSG_TEXT_USER_DELETION"));
     
-        /*
+        return USERS_VIEW_CREATE;
+    }
+
+    public void userDelete(User user_) {
+        userFacade.remove(user_);
+        usersList = listUsers();
+       
+        AppMessages.addMesage(AppBundle.getTextMessage("MSG_TITLE_DELETION"), 
+                AppBundle.getTextMessage("MSG_TEXT_USER_DELETION"));
+    }
+
+    public boolean checkIfCreate() {
+        return (currentOperation.equals(OPERATION_CREATE));
+    }
+
+    /*
      Messages
      */
     public void info() {

@@ -30,6 +30,8 @@ public class PasswordValidator implements Validator{
 
         HtmlInputText htmlInputText = (HtmlInputText) component;
         String label;
+        boolean isCreate = (boolean) component.getValueExpression("isCreate")
+                                              .getValue(context.getELContext()) ;
 
         if (htmlInputText.getLabel() == null
                 || htmlInputText.getLabel().trim().equals("")) {
@@ -38,7 +40,7 @@ public class PasswordValidator implements Validator{
             label = htmlInputText.getLabel();
         }
         
-        if ( value == null || value.toString().isEmpty() ) {
+        if ( (value == null || value.toString().isEmpty()) && isCreate == true ) {
                         FacesMessage facesMessage = new FacesMessage( label + ": " + 
                     AppBundle.getTextMessage("ERROR_MESSAGE_EMPTY_PASSWORD") 
             );
@@ -46,7 +48,7 @@ public class PasswordValidator implements Validator{
             throw new ValidatorException(facesMessage);
         }
         
-        if ( value.toString().length() < AppFacesContext.getMinPasswordSize() ) {
+        if ( (value.toString().length() < AppFacesContext.getMinPasswordSize()) && isCreate == true ) {
                         FacesMessage facesMessage = new FacesMessage( label + ": " + 
                     AppBundle.getTextMessage("ERROR_MESSAGE_PASSWORD_TOO_SHORT") 
             );
@@ -56,7 +58,7 @@ public class PasswordValidator implements Validator{
                 
         Pattern passwordPattern = Pattern.compile("^[a-zA-Z0-9\\s\\-\\.\\_]*$");
         Matcher matcher = passwordPattern.matcher((CharSequence) value);
-        if (!matcher.matches()) {
+        if (!matcher.matches() && isCreate == true ) {
             FacesMessage facesMessage = new FacesMessage( label + ": " + 
                     AppBundle.getTextMessage("ERROR_MESSAGE_NO_VALID_CHARACTERS_FOR_PASSWORD") 
             );

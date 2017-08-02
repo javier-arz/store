@@ -34,7 +34,7 @@
                                 <p:menuitem value="#{ bundle.USERS_LABEL_USERS }" action="#{ userMB.userIndex }"  />
                                 <p:menuitem value="Themes" url="http://www.primefaces.org/themes.html" />
                                 <p:separator />
-                                <p:menuitem value="#{ bundle.INDEX_LOGOUT }" action="#{ loginBean.logout() }"  />
+                                <p:menuitem value="#{ bundle.INDEX_LOGOUT }" action="#{ loginBean.isLogged }"  />
 
                             </p:submenu>
 
@@ -43,10 +43,7 @@
                 </p:layoutUnit>
 
                 <p:layoutUnit position="center" size="200">
-                    #{ bundle.MSG_WELCOME }
-                    <h:outputLabel value="#{ bundle.MSG_THERE_ARE } "/>
-                    <h:outputText value="#{ itemMB.countItems() }"/>
-                    <h:outputLabel value=" #{ bundle.ITEM_LABEL_ITEMS }!"/>
+                    <h3> #{ loginBean.currentModule } </h3>                    
                     
                     <p:separator />
                     

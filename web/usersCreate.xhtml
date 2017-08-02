@@ -42,14 +42,18 @@
                             <p:message  for="email" />
 
                             <p:outputLabel value="#{ bundle.USER_LABEL_ENTER_PASSWORD }" for="password" />
-                            <p:password id="password" value="#{ userMB.user.password }" required="true" match="passwordConfirmation" >
+                            <p:password id="password" value="#{ userMB.user.password }" 
+                                        required="#{ userMB.checkIfCreate() }" match="passwordConfirmation" >
                                 <f:validator validatorId="passwordValidator" />
+                                <f:attribute name="isCreate" value="#{ userMB.checkIfCreate() }" />
                             </p:password>
                             <p:message  for="password" />
 
                             <p:outputLabel value="#{ bundle.USER_LABEL_ENTER_PASSWORD_AGAIN }" for="passwordConfirmation" />            
-                            <p:password id="passwordConfirmation" value="#{ userMB.passwordConfirmation }" required="true">
+                            <p:password id="passwordConfirmation" value="#{ userMB.passwordConfirmation }" 
+                                        required="#{ userMB.checkIfCreate() }" >
                                 <f:validator validatorId="passwordValidator" />
+                                <f:attribute name="isCreate" value="#{ userMB.checkIfCreate() }" />
                             </p:password>
                             <p:message  for="passwordConfirmation" />
 

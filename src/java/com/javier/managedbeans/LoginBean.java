@@ -6,6 +6,7 @@
 package com.javier.managedbeans;
 
 import com.javier.entities.User;
+import com.javier.utils.AppBundle;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
@@ -30,6 +31,8 @@ public class LoginBean {
     private User user;
 
     private boolean isLogged;
+    
+    private String currentModule ;
 
     /**
      * Creates a new instance of loginBean
@@ -71,6 +74,14 @@ public class LoginBean {
         this.isLogged = isLogged;
     }
 
+
+    public String getCurrentModule() {
+        return currentModule;
+    }
+
+    public void setCurrentModule(String currentModule) {
+        this.currentModule = currentModule;
+    }
     public String login() {
         String view;
         // Hardcoded for fast first login
@@ -78,12 +89,14 @@ public class LoginBean {
                 && user.getPassword().equals("admin")) {
             isLogged = true;
             user = new User() ;
+            currentModule = AppBundle.getTextMessage("ITEM_LABEL_ITEMS") ;
             view = itemMB.itemIndex();
         } else {
             boolean isValid = userMB.checkUserLogin(user.getUsername(), user.getPassword());
             if (isValid) {
                 isLogged = true;
                 view = itemMB.itemIndex();
+                currentModule = AppBundle.getTextMessage("ITEM_LABEL_ITEMS") ;
             } else {
                 user = new User();
                 isLogged = false;
