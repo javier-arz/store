@@ -56,6 +56,17 @@
                                 <f:param name="filename" value="#{ item.mainImageUrl }" />
                             </p:graphicImage>
                         </p:column>
+                        
+                        <p:column headerText="#{ bundle.INDEX_LABEL_ACTIONS }" >
+                            <p:commandButton actionListener="#{ itemMB.itemDelete(item) }" 
+                                             value="#{ bundle.INDEX_LABEL_DELETE }" 
+                                             update="@form" ajax="true" >
+                                <p:confirm header="#{ bundle.INDEX_LABEL_CONFIRMATION }" 
+                                           message="#{ bundle.INDEX_DELETE_CONFIRMATION }" icon="ui-icon-alert" /> 
+                            </p:commandButton>
+                            <p:commandButton action="#{ itemMB.itemUpdate(item) }"
+                                             value="#{ bundle.INDEX_LABEL_UPDATE }" />
+                        </p:column>
 
                         <p:commandButton actionListener="#{ itemMB.listItems() }" update="itemsTable" />
 

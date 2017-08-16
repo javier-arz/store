@@ -112,6 +112,7 @@ public class LoginBean {
                 .getExternalContext().getSession(false);
         session.invalidate();
         isLogged = false;
+        user = new User();
         return "index" ;
     }
 

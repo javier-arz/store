@@ -44,7 +44,15 @@ public class ItemMB {
     public static final String ITEM_IMG_UPLOAD_FOLDER = AppFacesContext.getUploadImageLocation() + "items/";
 
     public static final String DEFAULT_IMAGE = AppFacesContext.getDefaultImageLocation();
+    
+    public static final String OPERATION_CREATE = "Create" ;
 
+    public static final String OPERATION_UPDATE = "Update" ;
+    
+    public static final String ITEMS_VIEW_LIST = "items" ;
+    
+    public static final String ITEMS_VIEW_CREATE = "itemsCreate" ;
+    
     // Element to receive the file images (to upload)
     private Part imageFile;
 
@@ -52,7 +60,9 @@ public class ItemMB {
     private StreamedContent imageToDownload;
 
     private Item item;
-
+    
+    private String currentOperation ;
+    
     private List<Item> itemsList = new ArrayList();
 
     public List<Item> getItemsList() {
@@ -113,6 +123,14 @@ public class ItemMB {
         }
     }
 
+    public String getCurrentOperation() {
+        return currentOperation;
+    }
+
+    public void setCurrentOperation(String currentOperation) {
+        this.currentOperation = currentOperation;
+    }
+
     public List<Item> listItems() {
         return itemFacade.findAll();
     }
@@ -126,6 +144,11 @@ public class ItemMB {
     }
 
     public String saveItem() {
+        
+        if ( getCurrentOperation() == OPERATION_UPDATE ) {
+            return updateItem();
+        }
+        
         if (imageFile != null) {
             saveImage();
         }
@@ -171,7 +194,34 @@ public class ItemMB {
     public String itemCreate() {
         // Clear the item object
         item = new Item();
-        return "itemsCreate";
+        setCurrentOperation(OPERATION_CREATE);
+        return ITEMS_VIEW_CREATE;
+    }
+    
+    public String itemUpdate(Item item_) {
+        item = item_ ;
+        setCurrentOperation(OPERATION_UPDATE);
+        return ITEMS_VIEW_CREATE ;
+    }
+    
+    public String updateItem() {
+        if ( imageFile != null ) {
+            updateImage();
+        }
+        
+        itemFacade.edit(item);
+        
+        return ITEMS_VIEW_LIST ;
+    }
+    
+    protected void updateImage()
+    {
+        if ( item.getMainImageUrl() != null && !item.getMainImageUrl().isEmpty() 
+                && Files.exists( Paths.get( item.getMainImageUrl() ) )  ) {
+            File file = new File(item.getMainImageUrl()) ;
+            file.delete();
+        }
+        saveImage();
     }
 
     /*
