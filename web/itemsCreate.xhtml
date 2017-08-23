@@ -13,7 +13,7 @@
                 <f:view>
                     <p:outputLabel value="#{ bundle.ITEM_LABEL_ADD }" />
                     <h:form enctype="multipart/form-data" >
-                        <p:panelGrid id="itemsGrid" columns="3" 
+                        <h:panelGrid id="itemsGrid" columns="3" 
                                      columnClasses="isLeft, isCenter, isRight" >
                             <p:outputLabel value="#{ bundle.ITEM_NAME }" for="name" />
                             <p:inputText id="name" value="#{ itemMB.item.name }" required="true" >
@@ -56,7 +56,7 @@
                             <p:outputLabel value="&nbsp;" />
                             <p:commandButton id="saveItem" action="#{ itemMB.saveItem }" 
                                              value="#{ bundle.ITEM_SAVE_ITEM }" ajax="false" />
-                        </p:panelGrid>
+                        </h:panelGrid>
                     </h:form>
                     <p:outputLabel value="&nbsp;"/>
                 </f:view>

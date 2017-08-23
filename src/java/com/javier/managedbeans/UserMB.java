@@ -250,7 +250,7 @@ public class UserMB {
         currentOperation = OPERATION_UPDATE;
         user = user_;
        
-        AppMessages.addMesage(AppBundle.getTextMessage("MSG_TITLE_DELETION"), 
+        AppMessages.addMesage(FacesMessage.SEVERITY_INFO, AppBundle.getTextMessage("MSG_TITLE_DELETION"), 
                 AppBundle.getTextMessage("MSG_TEXT_USER_DELETION"));
     
         return USERS_VIEW_CREATE;
@@ -260,7 +260,7 @@ public class UserMB {
         userFacade.remove(user_);
         usersList = listUsers();
        
-        AppMessages.addMesage(AppBundle.getTextMessage("MSG_TITLE_DELETION"), 
+        AppMessages.addMesage(FacesMessage.SEVERITY_INFO, AppBundle.getTextMessage("MSG_TITLE_DELETION"), 
                 AppBundle.getTextMessage("MSG_TEXT_USER_DELETION"));
     }
 

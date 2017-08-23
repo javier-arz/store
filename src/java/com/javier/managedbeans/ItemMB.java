@@ -7,7 +7,9 @@ package com.javier.managedbeans;
 
 import com.javier.ejb.ItemFacade;
 import com.javier.entities.Item;
+import com.javier.utils.AppBundle;
 import com.javier.utils.AppFacesContext;
+import com.javier.utils.AppMessages;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -155,7 +157,9 @@ public class ItemMB {
 
         itemFacade.create(item);
         itemsList = listItems();
-        return "items";
+        AppMessages.addMesage(FacesMessage.SEVERITY_INFO, AppBundle.getTextMessage("MSG_TITLE_CREATION"), 
+                AppBundle.getTextMessage("MSG_TEXT_ITEM_CREATION"));
+        return ITEMS_VIEW_LIST ;
     }
 
     protected void saveImage() {
@@ -188,7 +192,7 @@ public class ItemMB {
         if (itemsList == null || itemsList.size() == 0) {
             itemsList = listItems();
         }
-        return "items";
+        return ITEMS_VIEW_LIST ;
     }
 
     public String itemCreate() {
@@ -210,6 +214,11 @@ public class ItemMB {
         }
         
         itemFacade.edit(item);
+        
+        itemsList = listItems();
+        
+        AppMessages.addMesage(FacesMessage.SEVERITY_INFO, AppBundle.getTextMessage("MSG_TITLE_UPDATING"), 
+                AppBundle.getTextMessage("MSG_TEXT_ITEM_UPDATING"));
         
         return ITEMS_VIEW_LIST ;
     }

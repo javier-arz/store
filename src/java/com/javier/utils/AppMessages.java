@@ -6,6 +6,7 @@
 package com.javier.utils;
 
 import javax.faces.application.FacesMessage;
+import javax.faces.application.FacesMessage.Severity;
 import javax.faces.context.FacesContext;
 
 /**
@@ -14,8 +15,8 @@ import javax.faces.context.FacesContext;
  */
 public class AppMessages {
     
-    public static void addMesage(String summary, String detail) {
-        FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, summary, detail);
+    public static void addMesage(Severity severity, String summary, String detail) {
+        FacesMessage message = new FacesMessage( severity, summary, detail);
         FacesContext.getCurrentInstance().addMessage(null, message);
     }
 }
